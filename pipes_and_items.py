@@ -3,7 +3,9 @@ Problem: Given a string that represents items as asterisks (*)
 and compartment walls as pipes (|), a start index, and an 
 end index, return the number of items in a closed compartment.
 
-This solution assumes that asterisks are the only non-pipe character that can appear. If there were other non-items in between compartment walls, we would have to keep track of the item count rather than just open/close indices.
+This solution assumes that asterisks are the only non-pipe character that
+can appear. If there were other non-items in between compartment walls,
+we would have to keep track of the item count rather than just open/close indices.
 
 dict[start_index] = close_index  # serves as key to the next "open" pipe. 
 If dict[start_index] is -1, we have no more closing pipes.
