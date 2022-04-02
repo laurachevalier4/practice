@@ -11,7 +11,8 @@ dict[start_index] = close_index  # serves as key to the next "open" pipe.
 If dict[start_index] is -1, we have no more closing pipes.
 """
 def map_open_to_close(s):
-    """Given a string of asterisks and pipes, returns the mapping of start pipe to end pipe."""
+    """Given a string of asterisks and pipes, returns the mapping of open pipe
+	to close pipe, or start pipe to -1 if there is no close pipe."""
     mapping = {}
     start_index = 0
     string_length = len(s)
@@ -32,26 +33,29 @@ def map_open_to_close(s):
         # If this character isn't a pipe, check the next one.        
         else:
             start_index += 1
-    
-    print(mapping)
     return mapping
     
 def solution(s, start, end):
     mapping = map_open_to_close(s)
     item_count = 0
+    # We could make this more efficient by using an ordered dictionary
+    # and only accessing the indices that we know are open pipes, since
+    # we already know where these are from our map_open_to_close function.
     while start < end:
-        # If there is an open pipe here, calculate number of items,
-	# or end if there's no close pipe (if mapping[start] == -1.
-        if mapping.get(start, None):
+        # If there's an open pipe at this index, find the close (if
+	# there is one) and calculate number of items.
+	if mapping.get(start, None):
             close = mapping[start]
-            if close == -1:
+	    # Either no more close pipes, or we reached the end of
+	    # our index range.
+            if close == -1 or close >= end:
                 break
-            elif close >= end:  # The next close pipe is out of our index range. 
-                break
+	    # Otherwise, count number of items and reset start.
             else:
                 item_count += (close-1 - start)
                 start = close  # Start at the close pipe.
-        else:
+        # If no open pipe here, check the next index.
+	else:
             start += 1
     return item_count
     
